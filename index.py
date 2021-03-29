@@ -45,8 +45,6 @@ def intro():
     return sel
 
 if __name__=='__main__':
-    # driver.get("https://www.instagram.com/p/CMY7VtJFo-6/") # shoe_prize 6 pics
-    # driver.get("https://www.instagram.com/p/CMYmpH_ppSQ/") # shoe_prize 10 pics
     GET_IN_TIME=2
     while True:
         sel=intro()
@@ -63,10 +61,6 @@ if __name__=='__main__':
             driver.quit()
         else:
             print("[-] 올바른 메뉴를 선택해주세요!!!")
-    
-
-    # options = webdriver.ChromeOptions()
-    # options.add_argument('headless')
     
     
 
