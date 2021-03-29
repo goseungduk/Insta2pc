@@ -11,7 +11,7 @@ def download_img(url):
 
 # searching and download pics
 # 동적으로 따올만한 방법 구상 필요
-def multi_download(driver):    
+def onepost_multi_download(driver):    
     # extracting pics count
     pic_count=driver.find_element_by_xpath("//div[@class='JSZAJ  _3eoV-  IjCL9  WXPwG ']").find_elements_by_tag_name("div")
 
@@ -35,6 +35,9 @@ def multi_download(driver):
             pic_arrow.click()
         time.sleep(1)
 
+def oneacc_multi_thum_download(driver):
+    driver.execute_script("window.scrollTo(0, document.body.scrollHeight);") 
+
 def intro():
     print("<인스타그램 사진 다운로더>")
     print("1. 하나의 게시글에 있는 모든 사진 가져오기")
@@ -57,7 +60,16 @@ if __name__=='__main__':
             driver = webdriver.Chrome(path)
             driver.get(url)
             time.sleep(GET_IN_TIME)
-            multi_download(driver)
+            onepost_multi_download(driver)
+            driver.quit()
+        elif sel==2:
+            print("[+] 원하는 계정의 URL 을 입력해주세요")
+            url=input("input url : ")
+            path = "./webdriver/chromedriver.exe"
+            driver = webdriver.Chrome(path)
+            driver.get(url)
+            time.sleep(GET_IN_TIME)
+            oneacc_multi_thum_download(driver)
             driver.quit()
         else:
             print("[-] 올바른 메뉴를 선택해주세요!!!")
