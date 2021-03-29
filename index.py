@@ -39,21 +39,20 @@ print("<인스타그램 사진 다운로더>")
 print("※ 당분간은 사진 여러장 다운만 가능합니다.")
 print("- 사진여러장 있는 게시글의 URL 을 넣으시면 됩니다.")
 url=input("input url : ")
+# print("- 웹드라이버 경로를 입력해주세요.")
+# path=input("input webdriver path : ")
 options = webdriver.ChromeOptions()
 options.add_argument('headless')
-options.add_argument('window-size=1920x1080')
-options.add_argument("disable-gpu")
 path = "./webdriver/chromedriver.exe"
-driver = webdriver.Chrome(path, chrome_options=options)
+driver = webdriver.Chrome(path)
 driver.get(url)
 # driver.get("https://www.instagram.com/p/CMY7VtJFo-6/") # shoe_prize 6 pics
-# driver.get("https://www.instagram.com/p/CLx9EYihzAZ/") # dong gyun 2 pics
 # driver.get("https://www.instagram.com/p/CMYmpH_ppSQ/") # shoe_prize 10 pics
-time.sleep(3)
+time.sleep(2)
 
 multi_download(driver)
 
-
+driver.quit()
     
 
 
