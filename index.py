@@ -35,24 +35,39 @@ def multi_download(driver):
             pic_arrow.click()
         time.sleep(1)
 
-print("<인스타그램 사진 다운로더>")
-print("※ 당분간은 사진 여러장 다운만 가능합니다.")
-print("- 사진여러장 있는 게시글의 URL 을 넣으시면 됩니다.")
-url=input("input url : ")
-# print("- 웹드라이버 경로를 입력해주세요.")
-# path=input("input webdriver path : ")
-options = webdriver.ChromeOptions()
-options.add_argument('headless')
-path = "./webdriver/chromedriver.exe"
-driver = webdriver.Chrome(path)
-driver.get(url)
-# driver.get("https://www.instagram.com/p/CMY7VtJFo-6/") # shoe_prize 6 pics
-# driver.get("https://www.instagram.com/p/CMYmpH_ppSQ/") # shoe_prize 10 pics
-time.sleep(2)
+def intro():
+    print("<인스타그램 사진 다운로더>")
+    print("1. 하나의 게시글에 있는 모든 사진 가져오기")
+    print("2. 하나의 계정에 있는 모든 썸네일사진 가져오기")
+    print("3. 하나의 계정에 있는 모든 사진들 다 가져오기")
+    print("4. 종료")
+    sel=int(input("> "))
+    return sel
 
-multi_download(driver)
+if __name__=='__main__':
+    # driver.get("https://www.instagram.com/p/CMY7VtJFo-6/") # shoe_prize 6 pics
+    # driver.get("https://www.instagram.com/p/CMYmpH_ppSQ/") # shoe_prize 10 pics
+    GET_IN_TIME=2
+    while True:
+        sel=intro()
+        if sel==4:
+            break
+        elif sel==1:
+            print("[+] 원하는 게시글의 URL 을 입력해주세요")
+            url=input("input url : ")
+            path = "./webdriver/chromedriver.exe"
+            driver = webdriver.Chrome(path)
+            driver.get(url)
+            time.sleep(GET_IN_TIME)
+            multi_download(driver)
+            driver.quit()
+        else:
+            print("[-] 올바른 메뉴를 선택해주세요!!!")
+    
 
-driver.quit()
+    # options = webdriver.ChromeOptions()
+    # options.add_argument('headless')
+    
     
 
 
