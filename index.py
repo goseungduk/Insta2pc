@@ -36,7 +36,17 @@ def onepost_multi_download(driver):
         time.sleep(1)
 
 def oneacc_multi_thum_download(driver):
-    driver.execute_script("window.scrollTo(0, document.body.scrollHeight);") 
+    #aria-label="제어"
+    #class="v1Nh3 kIKUG  _bz0w" -> a 태그
+    collecting_urls(driver)
+
+def collecting_urls(driver):
+    is_login_FB=driver.find_element_by_class_name('KPnG0')
+    if(is_login_FB):
+        is_login_FB.click()
+        
+    #res=driver.find_element_by_css_selector('div.v1Nh3.kIKUG._bz0w')
+    #print(res)
 
 def intro():
     print("<인스타그램 사진 다운로더>")
