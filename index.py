@@ -41,10 +41,16 @@ def oneacc_multi_thum_download(driver):
     collecting_urls(driver)
 
 def collecting_urls(driver):
-    is_login_FB=driver.find_element_by_class_name('KPnG0')
+    try:
+        is_login_FB=driver.find_element_by_class_name('KPnG0')
+    except:
+        print('keep going')
+    else:
+        print('good')
+
     if(is_login_FB):
         is_login_FB.click()
-        
+     
     #res=driver.find_element_by_css_selector('div.v1Nh3.kIKUG._bz0w')
     #print(res)
 
