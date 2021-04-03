@@ -1,55 +1,31 @@
 from selenium import webdriver
+from selenium.webdriver.common.keys import Keys
 import urllib.request as urlREQ
-import time
-import random
-import string
+import time, random, string
+from bin import oneMulti
 
-# downloading pics with src
-def download_img(url):
-    tmp=''.join([random.choice(string.ascii_lowercase) for _ in range(5)])
-    urlREQ.urlretrieve(url,"test"+tmp+".jpg")
-
-# searching and download pics
-# 동적으로 따올만한 방법 구상 필요
-def onepost_multi_download(driver):    
-    # extracting pics count
-    pic_count=driver.find_element_by_xpath("//div[@class='JSZAJ  _3eoV-  IjCL9  WXPwG ']").find_elements_by_tag_name("div")
-
-    # extracting next button
-    pic_arrow=driver.find_element_by_xpath("//button[@tabindex='-1']")
-    
-    for i in range(0,len(pic_count)):
-        if(i==0): # start point
-            if(len(pic_count)>5): # temporary number 5
-                p=driver.find_element_by_xpath("//div[1]/section[1]/main[1]/div[1]/div[1]/article[1]/div[2]/div[1]/div[1]/div[2]/div[1]/div[1]/div[1]/ul[1]/li[2]/div[1]/div[1]/div[1]/div[1]/div[1]")
-            else:
-                p=driver.find_element_by_xpath("//div[1]/section[1]/main[1]/div[1]/div[1]/article[1]/div[2]/div[1]/div[1]/div[2]/div[1]/div[1]/div[1]/ul[1]/li[2]/div[1]/div[1]/div[1]/div[1]")
-        else:
-            try:
-                p=driver.find_element_by_xpath("//div[1]/section[1]/main[1]/div[1]/div[1]/article[1]/div[2]/div[1]/div[1]/div[2]/div[1]/div[1]/div[1]/ul[1]/li[3]/div[1]/div[1]/div[1]/div[1]")
-            except:
-                p=driver.find_element_by_xpath("//div[1]/section[1]/main[1]/div[1]/div[1]/article[1]/div[2]/div[1]/div[1]/div[2]/div[1]/div[1]/div[1]/ul[1]/li[2]/div[1]/div[1]/div[1]/div[1]/div[1]")
-        pic2=p.find_element_by_tag_name("img")
-        download_img(pic2.get_attribute('src'))
-        if(i!=len(pic_count)-1):
-            pic_arrow.click()
-        time.sleep(1)
-
-def oneacc_multi_thum_download(driver):
+def oneacc_multi_thum_download(driver,url):
     #aria-label="제어"
     #class="v1Nh3 kIKUG  _bz0w" -> a 태그
-    collecting_urls(driver)
+    collecting_urls(driver,url)
 
-def collecting_urls(driver):
+def collecting_urls(driver,url):
+    # https://www.instagram.com/dlwlrma/
     try:
         is_login_FB=driver.find_element_by_class_name('KPnG0')
-    except:
+    except: # 익명으로 로그인이 무사히 되었을 때
+        # 게시물들 URL 긁어오기 && 스크롤 작업 추가
         print('keep going')
-    else:
-        print('good')
-
-    if(is_login_FB):
+    else: # 익명로그인이 잘 안되었을때
+        # fb login 작업 진행
         is_login_FB.click()
+        el=driver.find_element_by_id("email")
+        el.send_keys("email")
+        el=driver.find_element_by_id("pass")
+        el.send_keys("pass")
+        el.send_keys(Keys.RETURN)
+        # driver.get(url) 로그인하고 메인화면으로 넘어오는거 어떻게 해결해!?
+        print('good')
      
     #res=driver.find_element_by_css_selector('div.v1Nh3.kIKUG._bz0w')
     #print(res)
@@ -76,7 +52,7 @@ if __name__=='__main__':
             driver = webdriver.Chrome(path)
             driver.get(url)
             time.sleep(GET_IN_TIME)
-            onepost_multi_download(driver)
+            oneMulti.onepost_multi_download(driver)
             driver.quit()
         elif sel==2:
             print("[+] 원하는 계정의 URL 을 입력해주세요")
@@ -85,8 +61,8 @@ if __name__=='__main__':
             driver = webdriver.Chrome(path)
             driver.get(url)
             time.sleep(GET_IN_TIME)
-            oneacc_multi_thum_download(driver)
-            driver.quit()
+            oneacc_multi_thum_download(driver,url)
+            #driver.quit()
         else:
             print("[-] 올바른 메뉴를 선택해주세요!!!")
     
