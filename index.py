@@ -13,14 +13,13 @@ def collecting_urls(driver,url):
     # https://www.instagram.com/dlwlrma/
     try:
         is_login_FB=driver.find_element_by_class_name('KPnG0')
-    except: # 익명으로 로그인이 무사히 되었을 때
+    except: 
+        # 익명으로 로그인이 무사히 되었을 때
         # 게시물들 URL 긁어오기 && 스크롤 작업 추가
-        article=driver.find_element_by_class_name("ySN3v")
-        first=article.find_element_by_xpath("/div[1]/div[1]/div[1]")
-        second=first.find_element_by_tag_name("a")
-        print(second.get_attribute('href'))
-        print('keep going')
-    else: # 익명로그인이 잘 안되었을때
+        res=driver.find_element_by_css_selector('div.v1Nh3.kIKUG._bz0w')
+        print(res) # succeed 21.04.05
+    else: 
+        # 익명로그인이 잘 안되었을때
         # fb login 작업 진행
         is_login_FB.click()
         el=driver.find_element_by_id("email")
@@ -32,15 +31,8 @@ def collecting_urls(driver,url):
             if(driver.current_url=="https://www.instagram.com/"):
                 driver.get(url)
                 break
-        article=driver.find_element_by_class_name("ySN3v")
-        first=article.find_element_by_xpath("/div[1]/div[1]/div[1]")
-        second=first.find_element_by_tag_name("a")
-        print(second.get_attribute('href'))
-        # driver.get(url) 로그인하고 메인화면으로 넘어오는거 어떻게 해결해!?
-        print('good')
-     
-    #res=driver.find_element_by_css_selector('div.v1Nh3.kIKUG._bz0w')
-    #print(res)
+        res=driver.find_element_by_css_selector('div.v1Nh3.kIKUG._bz0w')
+        print(res) # succeed 21.04.05
 
 def intro():
     print("<인스타그램 사진 다운로더>")
