@@ -3,25 +3,33 @@ from selenium.webdriver.common.keys import Keys
 import urllib.request as urlREQ
 import time, random, string
 import sys, os
-from bin import oneMulti
+from bin import onePostMultiPics # 하나의 게시물에서 모든 사진들
+from bin import oneAccAllThumbs # 하나의 계정에서 모든 썸네일
 from bin import fbLogin as FL # 임시 import 모듈 분리할 때까지만
 
 all_thumbs=[] # 전역 변수 자제해라
-def thumb_urls(driver): # 썸네일 url 따오기
+def thumb_urls(driver,mode): # 썸네일 url 따오기
     global all_thumbs
-    thumbs=driver.find_elements_by_css_selector('div.v1Nh3.kIKUG._bz0w')
-    for thumb in thumbs:
-        link=thumb.find_elements_by_tag_name('a')[0].get_attribute('href')
-        if(link not in all_thumbs):
-            all_thumbs.append(link)
+    if(mode=="all_pics"):
+        thumbs=driver.find_elements_by_css_selector('div.v1Nh3.kIKUG._bz0w')
+        for thumb in thumbs:
+            link=thumb.find_elements_by_tag_name('a')[0].get_attribute('href')
+            if(link not in all_thumbs):
+                all_thumbs.append(link)
+    else:
+        # <div class="KL4Bh"> 를 찾는 코드 넣기
+        thumbs=driver.find_elements_by_class_name('KL4Bh')
+        for thumb in thumbs:
+            src=thumb.find_elements_by_tag_name('img')[0].get_attribute('src')
+            if(src not in all_thumbs):
+                all_thumbs.append(src)
 
-def oneacc_multi_thum_download(driver,url):
+
+def oneacc_all_pics_download(driver,url):
     collecting_urls(driver,url)
 
 def collecting_urls(driver,url):
     global all_thumbs
-    # https://www.instagram.com/dlwlrma/
-    # https://www.instagram.com/accounts/signup/
     try:
         is_login_FB=driver.find_element_by_class_name('KPnG0')
     except: # 익명으로 로그인이 무사히 되었을 때
@@ -63,14 +71,13 @@ if __name__=='__main__':
         if sel==4:
             break
         elif sel==1:
-            # https://www.instagram.com/p/CNbePKFjxaf/
             print("[+] 원하는 게시글의 URL 을 입력해주세요")
             url=input("input url : ")
             path = "./webdriver/chromedriver.exe"
             driver = webdriver.Chrome(path)
             driver.get(url)
             time.sleep(GET_IN_TIME)
-            oneMulti.onepost_multi_download(driver,url)
+            onePostMultiPics.onepost_multi_download(driver,url)
             driver.quit()
         elif sel==2:
             print("[+] 원하는 계정의 URL 을 입력해주세요")
@@ -79,7 +86,16 @@ if __name__=='__main__':
             driver = webdriver.Chrome(path)
             driver.get(url)
             time.sleep(GET_IN_TIME)
-            oneacc_multi_thum_download(driver,url)
+            oneAccAllThumbs.oneacc_all_thumbs_download(driver,url)
+            driver.quit()
+        elif sel==3:
+            print("[+] 원하는 계정의 URL 을 입력해주세요")
+            url=input("input url : ")
+            path = "./webdriver/chromedriver.exe"
+            driver = webdriver.Chrome(path)
+            driver.get(url)
+            time.sleep(GET_IN_TIME)
+            oneacc_all_pics_download(driver,url)
             driver.quit()
         else:
             print("[-] 올바른 메뉴를 선택해주세요!!!")
