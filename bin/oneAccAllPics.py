@@ -8,6 +8,7 @@ from . import fbLogin as FL
 from . import thumbURL as TU
 
 def oneacc_all_pics_download(driver,url):
+    SCROLL_TIME=3
     all_urls=[]
     try:
         is_login_FB=driver.find_element_by_class_name('KPnG0')
@@ -15,7 +16,7 @@ def oneacc_all_pics_download(driver,url):
         last_height= driver.execute_script("return document.body.scrollHeight")
         while(True):
             driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
-            time.sleep(3)
+            time.sleep(SCROLL_TIME)
             new_height=driver.execute_script("return document.body.scrollHeight")
             if(new_height==last_height):
                 break
@@ -26,10 +27,13 @@ def oneacc_all_pics_download(driver,url):
         last_height = driver.execute_script("return document.body.scrollHeight")
         while(True):
             driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
-            time.sleep(3)
+            time.sleep(SCROLL_TIME)
             new_height=driver.execute_script("return document.body.scrollHeight")
             if(new_height==last_height):
                 break
             last_height=new_height
             TU.thumb_urls(driver,'all_pics',all_urls)
+    for url in all_urls: # url 순회단계
+        driver.get(url)
+        time.sleep(1)
     
