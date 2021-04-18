@@ -3,7 +3,6 @@ from selenium.webdriver.common.keys import Keys
 import urllib.request as urlREQ
 import time, random, string
 import sys, os
-import chromedriver_autoinstaller
 from bin import onePostMultiPics # 하나의 게시물에서 모든 사진들
 from bin import oneAccAllThumbs # 하나의 계정에서 모든 썸네일
 from bin import oneAccAllPics # 하나의 계정에서 모든 사진
@@ -19,7 +18,6 @@ def intro():
 
 if __name__=='__main__':
     GET_IN_TIME=2
-    chromedriver_autoinstaller.install()
     while True:
         sel=intro()
         if sel==4:
@@ -27,7 +25,7 @@ if __name__=='__main__':
         elif sel==1:
             print("[+] 원하는 게시글의 URL 을 입력해주세요")
             url=input("input url : ")
-            driver = webdriver.Chrome()
+            driver = webdriver.Chrome("./chromedriver.exe")
             driver.get(url)
             time.sleep(GET_IN_TIME)
             onePostMultiPics.onepost_multi_download(driver,url)
@@ -35,7 +33,7 @@ if __name__=='__main__':
         elif sel==2:
             print("[+] 원하는 계정의 URL 을 입력해주세요")
             url=input("input url : ")
-            driver = webdriver.Chrome()
+            driver = webdriver.Chrome("./chromedriver.exe")
             driver.get(url)
             time.sleep(GET_IN_TIME)
             oneAccAllThumbs.oneacc_all_thumbs_download(driver,url)
@@ -43,7 +41,7 @@ if __name__=='__main__':
         elif sel==3:
             print("[+] 원하는 계정의 URL 을 입력해주세요")
             url=input("input url : ")
-            driver = webdriver.Chrome()
+            driver = webdriver.Chrome("./chromedriver.exe")
             driver.get(url)
             time.sleep(GET_IN_TIME)
             oneAccAllPics.oneacc_all_pics_download(driver,url)
