@@ -5,51 +5,7 @@ import time, random, string
 import sys, os
 from bin import onePostMultiPics # 하나의 게시물에서 모든 사진들
 from bin import oneAccAllThumbs # 하나의 계정에서 모든 썸네일
-from bin import fbLogin as FL # 임시 import 모듈 분리할 때까지만
-
-all_thumbs=[] # 전역 변수 자제해라
-def thumb_urls(driver,mode): # 썸네일 url 따오기
-    global all_thumbs
-    if(mode=="all_pics"):
-        thumbs=driver.find_elements_by_css_selector('div.v1Nh3.kIKUG._bz0w')
-        for thumb in thumbs:
-            link=thumb.find_elements_by_tag_name('a')[0].get_attribute('href')
-            if(link not in all_thumbs):
-                all_thumbs.append(link)
-    else:
-        # <div class="KL4Bh"> 를 찾는 코드 넣기
-        thumbs=driver.find_elements_by_class_name('KL4Bh')
-        for thumb in thumbs:
-            src=thumb.find_elements_by_tag_name('img')[0].get_attribute('src')
-            if(src not in all_thumbs):
-                all_thumbs.append(src)
-
-def oneacc_all_pics_download(driver,url):
-    global all_thumbs
-    try:
-        is_login_FB=driver.find_element_by_class_name('KPnG0')
-    except: # 익명으로 로그인이 무사히 되었을 때
-        last_height = driver.execute_script("return document.body.scrollHeight")
-        while(True):
-            driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
-            time.sleep(3)
-            new_height=driver.execute_script("return document.body.scrollHeight")
-            if(new_height==last_height):
-                break
-            last_height=new_height
-            thumb_urls(driver)
-    else: # 익명로그인이 잘 안되었을때
-        FL.fb_login(driver,is_login_FB,url)
-        last_height = driver.execute_script("return document.body.scrollHeight")
-        while(True):
-            driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
-            time.sleep(3)
-            new_height=driver.execute_script("return document.body.scrollHeight")
-            if(new_height==last_height):
-                break
-            last_height=new_height
-            thumb_urls(driver)
-        # print(all_thumbs) 모든 게시물 가져오는 것 확인완료
+from bin import oneAccAllPics # 하나의 계정에서 모든 사진
 
 def intro():
     print("<인스타그램 사진 다운로더>")
@@ -91,7 +47,7 @@ if __name__=='__main__':
             driver = webdriver.Chrome(path)
             driver.get(url)
             time.sleep(GET_IN_TIME)
-            oneacc_all_pics_download(driver,url)
+            oneAccAllPics.oneacc_all_pics_download(driver,url)
             driver.quit()
         else:
             print("[-] 올바른 메뉴를 선택해주세요!!!")

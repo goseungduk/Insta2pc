@@ -1,13 +1,17 @@
+'''
+@ 하나의 게시물에서 모든 사진가져오기
+2021.04.18. 최종수정
+'''
+
 import time
 from . import downloadIMG as DI
 from . import fbLogin as FL
-# searching and download pics
-# 동적으로 따올만한 방법 구상 필요
+
 def onepost_multi_download(driver,url):
     try:
         is_login_FB=driver.find_element_by_class_name('KPnG0')
     except:
-        # extracting pics count
+        # 게시물의 사진개수 추출
         pic_count=driver.find_element_by_xpath("//div[@class='JSZAJ  _3eoV-  IjCL9  WXPwG ']").find_elements_by_tag_name("div")
 
         # extracting next button
