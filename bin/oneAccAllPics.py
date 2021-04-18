@@ -6,9 +6,11 @@ import time
 from . import downloadIMG as DI
 from . import fbLogin as FL
 from . import thumbURL as TU
+from . import onePostMultiPics
 
 def oneacc_all_pics_download(driver,url):
     SCROLL_TIME=3
+    GET_IN_TIME=1
     all_urls=[]
     try:
         is_login_FB=driver.find_element_by_class_name('KPnG0')
@@ -35,5 +37,7 @@ def oneacc_all_pics_download(driver,url):
             TU.thumb_urls(driver,'all_pics',all_urls)
     for url in all_urls: # url 순회단계
         driver.get(url)
-        time.sleep(1)
+        time.sleep(GET_IN_TIME)
+        onePostMultiPics.onepost_multi_download(driver,url)
+        
     
