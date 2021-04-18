@@ -24,11 +24,7 @@ def thumb_urls(driver,mode): # 썸네일 url 따오기
             if(src not in all_thumbs):
                 all_thumbs.append(src)
 
-
 def oneacc_all_pics_download(driver,url):
-    collecting_urls(driver,url)
-
-def collecting_urls(driver,url):
     global all_thumbs
     try:
         is_login_FB=driver.find_element_by_class_name('KPnG0')
