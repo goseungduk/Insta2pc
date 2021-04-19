@@ -4,8 +4,7 @@
 '''
 
 import time
-from . import downloadIMG as DI
-from . import fbLogin as FL
+from bin.utils import download_img, fb_login
 
 def onepost_multi_download(driver,url):
     try:
@@ -19,7 +18,7 @@ def onepost_multi_download(driver,url):
             # 사진하나만 있을때
             p=driver.find_element_by_xpath("//div[1]/section[1]/main[1]/div[1]/div[1]/article[1]/div[2]/div[1]/div[1]/div[1]")
             pic2=p.find_element_by_tag_name("img")
-            DI.download_img(pic2.get_attribute('src'))
+            download_img(pic2.get_attribute('src'))
             time.sleep(1)
         else:
             for i in range(0,len(pic_count)):
@@ -34,12 +33,12 @@ def onepost_multi_download(driver,url):
                     except:
                         p=driver.find_element_by_xpath("//div[1]/section[1]/main[1]/div[1]/div[1]/article[1]/div[2]/div[1]/div[1]/div[2]/div[1]/div[1]/div[1]/ul[1]/li[2]/div[1]/div[1]/div[1]/div[1]/div[1]")
                 pic2=p.find_element_by_tag_name("img")
-                DI.download_img(pic2.get_attribute('src'))
+                download_img(pic2.get_attribute('src'))
                 if(i!=len(pic_count)-1):
                     pic_arrow.click()
                 time.sleep(1)
     else:
-        FL.fb_login(driver,is_login_FB,url)
+        fb_login(driver,is_login_FB,url)
        # 게시물의 사진개수 추출
         try:
             pic_count=driver.find_element_by_xpath("//div[@class='JSZAJ  _3eoV-  IjCL9  WXPwG ']").find_elements_by_tag_name("div")
@@ -48,7 +47,7 @@ def onepost_multi_download(driver,url):
             # 사진하나만 있을때
             p=driver.find_element_by_xpath("//div[1]/section[1]/main[1]/div[1]/div[1]/article[1]/div[2]/div[1]/div[1]/div[1]")
             pic2=p.find_element_by_tag_name("img")
-            DI.download_img(pic2.get_attribute('src'))
+            download_img(pic2.get_attribute('src'))
             time.sleep(1)
         else:
             for i in range(0,len(pic_count)):
@@ -63,7 +62,7 @@ def onepost_multi_download(driver,url):
                     except:
                         p=driver.find_element_by_xpath("//div[1]/section[1]/main[1]/div[1]/div[1]/article[1]/div[2]/div[1]/div[1]/div[2]/div[1]/div[1]/div[1]/ul[1]/li[2]/div[1]/div[1]/div[1]/div[1]/div[1]")
                 pic2=p.find_element_by_tag_name("img")
-                DI.download_img(pic2.get_attribute('src'))
+                download_img(pic2.get_attribute('src'))
                 if(i!=len(pic_count)-1):
                     pic_arrow.click()
                 time.sleep(1)
