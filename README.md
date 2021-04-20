@@ -15,3 +15,7 @@ K-Instagram pics downloader
 
 [insta2pc_windows_v1.04.18.](https://drive.google.com/file/d/13oc-zQ7RnNj-R1ny3Txgz9cRxF9weCcv/view?usp=sharing)
 
+
+## **유의사항**
+
+- 같이 동봉된 chromedriver.exe 는 실행파일과 같은경로에 항상 있어야합니다.
