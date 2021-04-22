@@ -1,8 +1,9 @@
-import sys, time
+import sys, time, os
 from PyQt5.QtWidgets import *
 from PyQt5.QtGui import QIcon,QFont
 from selenium import webdriver
-
+sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
+from bin import onePostMultiPics
 '''
 QtWidgets 모듈에는 QApplication 클래스가 정의되어 있습니다. 해당 클래스에 대한 객체를 생성합니다. 
 이때 현재 소스코드 파일에 대한 경로를 담고 있는 파이썬 리스트를 클래스의 생성자로 전달합니다. 
@@ -89,11 +90,12 @@ class MyWindow(QMainWindow):
         print(self.urlBox.text()=='') # True
         print(self.idBox.text())
         print(self.pwBox.text())
-        # url="https://www.instagram.com/p/CM3ISZSDeQF/"
-        # driver=webdriver.Chrome("../chromedriver.exe")
-        # driver.get(url)
-        # time.sleep(2)
-        # driver.quit()
+        url=self.urlBox.text()
+        driver=webdriver.Chrome("../chromedriver.exe")
+        driver.get(url)
+        time.sleep(2)
+        onePostMultiPics.onepost_multi_download(driver,url)
+        driver.quit()
 
 window = MyWindow()
 window.show()
