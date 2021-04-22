@@ -87,16 +87,29 @@ class MyWindow(QMainWindow):
         self.pwBox.resize(170,25)
 
     def btn_clicked(self):
-        print(self.urlBox.text()=='') # True
-        print(self.idBox.text())
-        print(self.pwBox.text())
+        if(self.urlBox.text()==''):
+            self.warn("url")
+            return 0
+        if(self.idBox.text()=='' or self.pwBox.text()==''):
+            self.warn("account")
+            return 0
+        self.onePost()
+        
+    def onePost(self):
         url=self.urlBox.text()
+        id=self.idBox.text()
+        pw=self.pwBox.text()
         driver=webdriver.Chrome("../chromedriver.exe")
         driver.get(url)
         time.sleep(2)
-        onePostMultiPics.onepost_multi_download(driver,url)
+        onePostMultiPics.onepost_multi_download(driver,url,id,pw)
         driver.quit()
 
+    def warn(self,text):
+        if(text=="url"):
+            QMessageBox.question(self,'Warning','url 을 입력해주세요!',QMessageBox.Yes,QMessageBox.NoButton)
+        if(text=="account"):
+            QMessageBox.question(self,'Warning','계정을 입력해주세요!',QMessageBox.Yes,QMessageBox.NoButton)
 window = MyWindow()
 window.show()
 
