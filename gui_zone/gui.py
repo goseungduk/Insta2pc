@@ -4,21 +4,14 @@ from PyQt5.QtGui import QIcon,QFont
 from selenium import webdriver
 sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
 from bin import onePostMultiPics
+# 멀티스레딩 요함 
+
 '''
 QtWidgets 모듈에는 QApplication 클래스가 정의되어 있습니다. 해당 클래스에 대한 객체를 생성합니다. 
 이때 현재 소스코드 파일에 대한 경로를 담고 있는 파이썬 리스트를 클래스의 생성자로 전달합니다. 
 PyQt5를 이용한 모든 프로그램은 반드시 QApplication 객체를 생성해야합니다.
 '''
 app = QApplication(sys.argv) # gui.py 전달
-
-#win = QWidget()
-#win.show()
-
-# button = QPushButton("Button")
-#button.show()
-
-# label = QLabel("Label")
-# label.show()
 
 '''
 QMainWindow 주춧돌 역할함. 상속받아옴.
