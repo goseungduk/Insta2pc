@@ -75,6 +75,7 @@ class MyWindow(QMainWindow):
         self.idBox.move(30,220)
         self.idBox.resize(150,25)
         self.pwBox=QLineEdit(self)
+        self.pwBox.setEchoMode(QLineEdit.Password)
         self.pwBox.setPlaceholderText('PW를 입력해주세요')
         self.pwBox.move(200,220)
         self.pwBox.resize(170,25)
@@ -97,12 +98,14 @@ class MyWindow(QMainWindow):
         time.sleep(2)
         onePostMultiPics.onepost_multi_download(driver,url,id,pw)
         driver.quit()
+        QMessageBox.information(self,"insta2pc","다운이 완료되었습니다!")
 
     def warn(self,text):
         if(text=="url"):
             QMessageBox.question(self,'Warning','url 을 입력해주세요!',QMessageBox.Yes,QMessageBox.NoButton)
         if(text=="account"):
             QMessageBox.question(self,'Warning','계정을 입력해주세요!',QMessageBox.Yes,QMessageBox.NoButton)
+            
 window = MyWindow()
 window.show()
 
