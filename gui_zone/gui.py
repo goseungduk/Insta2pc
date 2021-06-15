@@ -1,4 +1,5 @@
 import sys, time, os
+import chromedriver_autoinstaller
 from PyQt5.QtWidgets import *
 from PyQt5.QtGui import QIcon,QFont
 from selenium import webdriver
@@ -17,6 +18,7 @@ app = QApplication(sys.argv) # gui.py 전달
 QMainWindow 주춧돌 역할함. 상속받아옴.
 생성자의 행동은 QMainWindow 의 상속자.
 '''
+
 class MyWindow(QMainWindow):
     def __init__(self):
         super().__init__()
@@ -38,8 +40,8 @@ class MyWindow(QMainWindow):
     def initTitle(self):
         # Title Label
         self.title=QLabel("Insta2pc",self)
-        self.title.move(100,30)
-        self.title.resize(180,50) 
+        self.title.move(80,30)
+        self.title.resize(230,50) 
         self.title.setStyleSheet("color: #FF5733; border-style: solid; border-width: 2px; border-color: #FFC300; border-radius: 10px;")
         self.title_font=self.title.font()
         self.title_font.setPointSize(30)
@@ -47,7 +49,7 @@ class MyWindow(QMainWindow):
         self.title.setFont(self.title_font)
         # Version Label
         self.version=QLabel("v1.04.18.",self)
-        self.version.move(295,30)
+        self.version.move(320,30)
         self.version.resize(60,20)
         self.version.setStyleSheet("color: #FF5733;")
     def urlBar(self):
@@ -93,7 +95,8 @@ class MyWindow(QMainWindow):
         url=self.urlBox.text()
         id=self.idBox.text()
         pw=self.pwBox.text()
-        driver=webdriver.Chrome("../chromedriver.exe")
+        path = chromedriver_autoinstaller.install()
+        driver = webdriver.Chrome(path)
         driver.get(url)
         time.sleep(2)
         onePostMultiPics.onepost_multi_download(driver,url,id,pw)
