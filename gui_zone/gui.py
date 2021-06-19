@@ -1,3 +1,4 @@
+from PyQt5.QtCore import QObject, QThread, pyqtSignal
 import sys, time, os
 import chromedriver_autoinstaller
 from PyQt5.QtWidgets import *
@@ -6,7 +7,7 @@ from selenium import webdriver
 sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
 from bin import onePostMultiPics
 # 멀티스레딩 요함 
-
+#https://www.instagram.com/p/CQTA1N7H-HT/
 '''
 QtWidgets 모듈에는 QApplication 클래스가 정의되어 있습니다. 해당 클래스에 대한 객체를 생성합니다. 
 이때 현재 소스코드 파일에 대한 경로를 담고 있는 파이썬 리스트를 클래스의 생성자로 전달합니다. 
@@ -18,10 +19,31 @@ app = QApplication(sys.argv) # gui.py 전달
 QMainWindow 주춧돌 역할함. 상속받아옴.
 생성자의 행동은 QMainWindow 의 상속자.
 '''
+class Worker(QThread):
+    finished=pyqtSignal()
+    def __init__(self,parent=None):
+        super().__init__()
+        self.mainGUI=parent
+    def run(self):
+        # my task
+        url=self.mainGUI.urlBox.text()
+        id=self.mainGUI.idBox.text()
+        pw=self.mainGUI.pwBox.text()
+        path = chromedriver_autoinstaller.install()
+        driver = webdriver.Chrome(path)
+        driver.get(url)
+        time.sleep(2)
+        onePostMultiPics.onepost_multi_download(driver,url,id,pw)
+        driver.quit()
+        self.mainGUI.btn1.setEnabled(True)
+        self.mainGUI.btn1.setText("게시물하나의 모든사진 가져오기")
+        self.finished.emit()
+        #QMessageBox.information(self.mainGUI,"insta2pc","다운이 완료되었습니다!")
+
 
 class MyWindow(QMainWindow):
-    def __init__(self):
-        super().__init__()
+    def __init__(self,parent=None):
+        super().__init__(parent)
         # QMainWindow 의 멤버함수
         self.initUI()
     def initUI(self):
@@ -89,19 +111,11 @@ class MyWindow(QMainWindow):
         if(self.idBox.text()=='' or self.pwBox.text()==''):
             self.warn("account")
             return 0
-        self.onePost()
-        
-    def onePost(self):
-        url=self.urlBox.text()
-        id=self.idBox.text()
-        pw=self.pwBox.text()
-        path = chromedriver_autoinstaller.install()
-        driver = webdriver.Chrome(path)
-        driver.get(url)
-        time.sleep(2)
-        onePostMultiPics.onepost_multi_download(driver,url,id,pw)
-        driver.quit()
-        QMessageBox.information(self,"insta2pc","다운이 완료되었습니다!")
+        self.btn1.setText("잠시만기다려주세요...")
+        self.btn1.setEnabled(False)
+        self.th=Worker(self)
+        self.th.finished.connect(lambda:QMessageBox.information(self,"insta2pc","다운이 완료되었습니다!"))
+        self.th.start()
 
     def warn(self,text):
         if(text=="url"):
@@ -116,4 +130,4 @@ window.show()
 이벤트 루프가 시작되면 GUI 프로그램은 사용자가 '닫기' 버틑을 누를 때 까지 종료하지 않고 계속 실행됩니다. 
 이벤트 루프는 반복문 내에서 사용자로 부터 입력되는 이벤트를 처리하기 때문에 그 이름이 '이벤트 루프' 인 것입니다.
 '''
-app.exec_()
+app.exec_() # To avoid confliction with the earlier version of 'exec()'...
