@@ -13,7 +13,7 @@
 
 ## **배포판**
 
-[insta2pc_windows_v1.04.18.](https://drive.google.com/file/d/13oc-zQ7RnNj-R1ny3Txgz9cRxF9weCcv/view?usp=sharing)
+[insta2pc_windows_v1.04.18.](https://drive.google.com/file/d/13KmUHvQYQh1eDsU-IBrdlnpYJQm60yvI/view?usp=sharing)
 
 
 ## **유의사항**
