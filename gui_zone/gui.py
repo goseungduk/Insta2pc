@@ -103,7 +103,7 @@ class MyWindow(QMainWindow):
         self.btn3=QPushButton("계정하나의 모든 사진들 가져오기",self)
         self.btn3.move(20,440)
         self.btn3.resize(360,60)
-        self.btn3.clicked.connect(lambda:print('3'))
+        self.btn3.clicked.connect(self.get_AllPics_from_oneAcc)
     def initTitle(self):
         # Title Label
         self.title=QLabel("Insta2pc",self)
@@ -186,7 +186,7 @@ class MyWindow(QMainWindow):
         if(self.input_checking()):
             self.enabling_btn(0)
             self.btn3.setText("잠시만기다려주세요...")
-            self.th=OneAccAllPics(self)
+            self.th=OneAcc_AllPics(self)
             self.th.btn_onoff.connect(self.enabling_btn)
             self.th.finished.connect(lambda:QMessageBox.information(self,"insta2pc","다운이 완료되었습니다!"))
             self.th.start()
