@@ -1,9 +1,9 @@
-from PyQt5.QtCore import QObject, QThread, pyqtSignal
+from PyQt5.QtCore import QThread, pyqtSignal
 import sys, time, os
-#import chromedriver_autoinstaller
 from PyQt5.QtWidgets import QPushButton,QLabel,QGroupBox,QLineEdit,QApplication,QMainWindow,QMessageBox
 from PyQt5.QtGui import QIcon,QFont
 from selenium import webdriver
+import chromedriver_autoinstaller
 sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
 from bin import onePostMultiPics
 from bin import oneAccAllThumbs
@@ -19,8 +19,8 @@ class OnePost_MultiPics(QThread):
         url=self.mainGUI.urlBox.text()
         id=self.mainGUI.idBox.text()
         pw=self.mainGUI.pwBox.text()
-        #path = chromedriver_autoinstaller.install()
-        driver = webdriver.Chrome("./chromedriver.exe")
+        path=chromedriver_autoinstaller.install()
+        driver = webdriver.Chrome(path)
         driver.get(url)
         time.sleep(2)
         onePostMultiPics.onepost_multi_download(driver,url,id,pw)
@@ -39,8 +39,8 @@ class OneAcc_AllThumbs(QThread):
         url=self.mainGUI.urlBox.text()
         id=self.mainGUI.idBox.text()
         pw=self.mainGUI.pwBox.text()
-        #path = chromedriver_autoinstaller.install()
-        driver = webdriver.Chrome("./chromedriver.exe")
+        path=chromedriver_autoinstaller.install()
+        driver = webdriver.Chrome(path)
         driver.get(url)
         time.sleep(2)
         oneAccAllThumbs.oneacc_all_thumbs_download(driver,url,id,pw)
@@ -58,8 +58,8 @@ class OneAcc_AllPics(QThread):
         url=self.mainGUI.urlBox.text()
         id=self.mainGUI.idBox.text()
         pw=self.mainGUI.pwBox.text()
-        #path = chromedriver_autoinstaller.install()
-        driver = webdriver.Chrome("./chromedriver.exe")
+        path=chromedriver_autoinstaller.install()
+        driver = webdriver.Chrome(path)
         driver.get(url)
         time.sleep(2)
         oneAccAllPics.oneacc_all_pics_download(driver,url,id,pw)

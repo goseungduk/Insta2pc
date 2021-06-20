@@ -41,6 +41,5 @@ def thumb_urls(driver,mode,all_urls): # 썸네일 url 따오기
         for thumb in thumbs:
             src=thumb.find_elements_by_tag_name('img')[0].get_attribute('src')
             if(src not in all_urls):
-                print(src)
                 all_urls.append(src)
     return all_urls
