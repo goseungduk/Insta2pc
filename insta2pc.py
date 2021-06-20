@@ -1,24 +1,14 @@
 from PyQt5.QtCore import QObject, QThread, pyqtSignal
 import sys, time, os
-import chromedriver_autoinstaller
-from PyQt5.QtWidgets import *
+#import chromedriver_autoinstaller
+from PyQt5.QtWidgets import QPushButton,QLabel,QGroupBox,QLineEdit,QApplication,QMainWindow,QMessageBox
 from PyQt5.QtGui import QIcon,QFont
 from selenium import webdriver
 sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
 from bin import onePostMultiPics
 from bin import oneAccAllThumbs
 from bin import oneAccAllPics
-'''
-QtWidgets 모듈에는 QApplication 클래스가 정의되어 있습니다. 해당 클래스에 대한 객체를 생성합니다. 
-이때 현재 소스코드 파일에 대한 경로를 담고 있는 파이썬 리스트를 클래스의 생성자로 전달합니다. 
-PyQt5를 이용한 모든 프로그램은 반드시 QApplication 객체를 생성해야합니다.
-'''
-app = QApplication(sys.argv) # gui.py 전달
-
-'''
-QMainWindow 주춧돌 역할함. 상속받아옴.
-생성자의 행동은 QMainWindow 의 상속자.
-'''
+app = QApplication(sys.argv)
 class OnePost_MultiPics(QThread):
     finished=pyqtSignal()
     btn_onoff=pyqtSignal(int)
@@ -29,8 +19,8 @@ class OnePost_MultiPics(QThread):
         url=self.mainGUI.urlBox.text()
         id=self.mainGUI.idBox.text()
         pw=self.mainGUI.pwBox.text()
-        path = chromedriver_autoinstaller.install()
-        driver = webdriver.Chrome(path)
+        #path = chromedriver_autoinstaller.install()
+        driver = webdriver.Chrome("./chromedriver.exe")
         driver.get(url)
         time.sleep(2)
         onePostMultiPics.onepost_multi_download(driver,url,id,pw)
@@ -49,8 +39,8 @@ class OneAcc_AllThumbs(QThread):
         url=self.mainGUI.urlBox.text()
         id=self.mainGUI.idBox.text()
         pw=self.mainGUI.pwBox.text()
-        path = chromedriver_autoinstaller.install()
-        driver = webdriver.Chrome(path)
+        #path = chromedriver_autoinstaller.install()
+        driver = webdriver.Chrome("./chromedriver.exe")
         driver.get(url)
         time.sleep(2)
         oneAccAllThumbs.oneacc_all_thumbs_download(driver,url,id,pw)
@@ -68,8 +58,8 @@ class OneAcc_AllPics(QThread):
         url=self.mainGUI.urlBox.text()
         id=self.mainGUI.idBox.text()
         pw=self.mainGUI.pwBox.text()
-        path = chromedriver_autoinstaller.install()
-        driver = webdriver.Chrome(path)
+        #path = chromedriver_autoinstaller.install()
+        driver = webdriver.Chrome("./chromedriver.exe")
         driver.get(url)
         time.sleep(2)
         oneAccAllPics.oneacc_all_pics_download(driver,url,id,pw)
@@ -198,9 +188,4 @@ class MyWindow(QMainWindow):
             
 window = MyWindow()
 window.show()
-
-'''
-이벤트 루프가 시작되면 GUI 프로그램은 사용자가 '닫기' 버틑을 누를 때 까지 종료하지 않고 계속 실행됩니다. 
-이벤트 루프는 반복문 내에서 사용자로 부터 입력되는 이벤트를 처리하기 때문에 그 이름이 '이벤트 루프' 인 것입니다.
-'''
 app.exec_() # To avoid confliction with the earlier version of 'exec()'...
