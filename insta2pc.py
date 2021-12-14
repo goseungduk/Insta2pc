@@ -1,17 +1,26 @@
-from PyQt5.QtCore import QThread, pyqtSignal
 import sys, time, os
+from PyQt5.QtCore import QThread, pyqtSignal
 from PyQt5.QtWidgets import QPushButton,QLabel,QGroupBox,QLineEdit,QApplication,QMainWindow,QMessageBox
 from PyQt5.QtGui import QIcon,QFont
 from selenium import webdriver
 import chromedriver_autoinstaller
+
+"""
+    bin 디렉토리로 부터 필요한 함수 모듈 가져옴
+"""
 sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
 from bin import onePostMultiPics
 from bin import oneAccAllThumbs
 from bin import oneAccAllPics
 app = QApplication(sys.argv)
+
+"""
+    하나의 게시물에 있는 여러 사진을 다운로드하는 클래스
+"""
 class OnePost_MultiPics(QThread):
-    finished=pyqtSignal()
-    btn_onoff=pyqtSignal(int)
+    finished=pyqtSignal() # 다운로드 작업이 끝났는지 여부에 대한 signal
+    fuzzed=pyqtSignal() # 오류 여부에 대한 signal
+    btn_onoff=pyqtSignal(int) # 버튼 on/off 조절 signal
     def __init__(self,parent=None):
         super().__init__()
         self.mainGUI=parent
@@ -21,16 +30,26 @@ class OnePost_MultiPics(QThread):
         pw=self.mainGUI.pwBox.text()
         path=chromedriver_autoinstaller.install()
         driver = webdriver.Chrome(path)
-        driver.get(url)
-        time.sleep(2)
-        onePostMultiPics.onepost_multi_download(driver,url,id,pw)
-        driver.quit()
-        self.finished.emit()
-        self.btn_onoff.emit(1)
-        self.mainGUI.btn1.setText("게시물하나의 모든사진 가져오기")
+        time.sleep(1)
+        try:
+            onePostMultiPics.onepost_multi_download(driver,url,id,pw)
+        except: # 다운로드 중간에 오류가 생기면 안전하게 중단
+            driver.quit()
+            self.fuzzed.emit()
+            self.btn_onoff.emit(1)
+            self.mainGUI.btn1.setText("게시물하나의 모든사진 가져오기")
+        else:
+            self.finished.emit()
+            self.btn_onoff.emit(1)
+            self.mainGUI.btn1.setText("게시물하나의 모든사진 가져오기")
 
+"""
+    하나의 게시물에 있는 여러 사진을 다운로드하는 클래스
+    (이하 소스내용은 OnePost_MultiPics 와 동일)
+"""
 class OneAcc_AllThumbs(QThread):
     finished=pyqtSignal()
+    fuzzed=pyqtSignal()
     btn_onoff=pyqtSignal(int)
     def __init__(self,parent=None):
         super().__init__()
@@ -41,13 +60,20 @@ class OneAcc_AllThumbs(QThread):
         pw=self.mainGUI.pwBox.text()
         path=chromedriver_autoinstaller.install()
         driver = webdriver.Chrome(path)
-        driver.get(url)
-        time.sleep(2)
-        oneAccAllThumbs.oneacc_all_thumbs_download(driver,url,id,pw)
-        driver.quit()
-        self.finished.emit()
-        self.btn_onoff.emit(1)
-        self.mainGUI.btn2.setText("계정하나의 모든 썸네일 가져오기")
+        time.sleep(1)
+        try:
+            oneAccAllThumbs.oneacc_all_thumbs_download(driver,url,id,pw)
+        except:
+            driver.quit()
+            self.fuzzed.emit()
+            self.btn_onoff.emit(1)
+            self.mainGUI.btn1.setText("게시물하나의 모든사진 가져오기")
+        else:
+            driver.quit()
+            self.finished.emit()
+            self.btn_onoff.emit(1)
+            self.mainGUI.btn2.setText("계정하나의 모든 썸네일 가져오기")
+
 class OneAcc_AllPics(QThread):
     finished=pyqtSignal()
     btn_onoff=pyqtSignal(int)
@@ -67,6 +93,7 @@ class OneAcc_AllPics(QThread):
         self.finished.emit()
         self.btn_onoff.emit(1)
         self.mainGUI.btn3.setText("계정하나의 모든 사진들 가져오기")
+
 class MyWindow(QMainWindow):
     def __init__(self,parent=None):
         super().__init__(parent)
@@ -90,15 +117,16 @@ class MyWindow(QMainWindow):
         self.btn2.move(20,370)
         self.btn2.resize(360,60)
         self.btn2.clicked.connect(self.get_AllThumbs_from_oneAcc)
-        self.btn3=QPushButton("계정하나의 모든 사진들 가져오기",self)
-        self.btn3.move(20,440)
-        self.btn3.resize(360,60)
-        self.btn3.clicked.connect(self.get_AllPics_from_oneAcc)
+        # 2021.12.15. 임시 비활성화
+        # self.btn3=QPushButton("계정하나의 모든 사진들 가져오기",self)
+        # self.btn3.move(20,440)
+        # self.btn3.resize(360,60)
+        # self.btn3.clicked.connect(self.get_AllPics_from_oneAcc)
     def initTitle(self):
         # Title Label
         self.title=QLabel("Insta2pc",self)
-        self.title.move(110,30)
-        self.title.resize(180,50) 
+        self.title.move(80,30)
+        self.title.resize(220,55) 
         self.title.setStyleSheet("color: #FF5733; border-style: solid; border-width: 2px; border-color: #FFC300; border-radius: 10px;")
         self.title_font=self.title.font()
         self.title_font.setPointSize(30)
@@ -162,6 +190,7 @@ class MyWindow(QMainWindow):
             self.btn1.setText("잠시만기다려주세요...")
             self.th=OnePost_MultiPics(self)
             self.th.btn_onoff.connect(self.enabling_btn)
+            self.th.fuzzed.connect(lambda:QMessageBox.critical(self,"insta2pc","오류로 인해 중단되었습니다!"))
             self.th.finished.connect(lambda:QMessageBox.information(self,"insta2pc","다운이 완료되었습니다!"))
             self.th.start()
     def get_AllThumbs_from_oneAcc(self):
