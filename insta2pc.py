@@ -190,7 +190,7 @@ class MyWindow(QMainWindow):
             self.btn1.setText("잠시만기다려주세요...")
             self.th=OnePost_MultiPics(self)
             self.th.btn_onoff.connect(self.enabling_btn)
-            self.th.fuzzed.connect(lambda:QMessageBox.critical(self,"insta2pc","오류로 인해 중단되었습니다!"))
+            self.th.fuzzed.connect(lambda:QMessageBox.critical(self,"insta2pc","오류로 인해 중단되었습니다! 다시 시도해주세요"))
             self.th.finished.connect(lambda:QMessageBox.information(self,"insta2pc","다운이 완료되었습니다!"))
             self.th.start()
     def get_AllThumbs_from_oneAcc(self):
@@ -199,6 +199,7 @@ class MyWindow(QMainWindow):
             self.btn2.setText("잠시만기다려주세요...")
             self.th=OneAcc_AllThumbs(self)
             self.th.btn_onoff.connect(self.enabling_btn)
+            self.th.fuzzed.connect(lambda:QMessageBox.critical(self,"insta2pc","오류로 인해 중단되었습니다! 다시 시도해주세요"))
             self.th.finished.connect(lambda:QMessageBox.information(self,"insta2pc","다운이 완료되었습니다!"))
             self.th.start()
     def get_AllPics_from_oneAcc(self):
