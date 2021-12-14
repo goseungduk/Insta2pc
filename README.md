@@ -8,6 +8,10 @@
 
 ![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)
 
+## **Release**
+
+[1.12.15 버전 Release](https://github.com/goseungduk/Insta2pc/releases/tag/1.12.15)
+
 ## **기능**
 
 - 하나의 게시글에 대한 모든 사진 다운로드
