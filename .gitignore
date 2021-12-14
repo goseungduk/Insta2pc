@@ -2,3 +2,4 @@ test_url.txt
 /__pycache__
 setup.py
 chromedriver91.exe
+/env
