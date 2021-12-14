@@ -36,9 +36,9 @@ def fb_login(driver,url,id,pw):
             el.send_keys(email)
             el=driver.find_element_by_id("pass")
             el.send_keys(pw)
-            lazy(10)
+            lazy(13)
             el.send_keys(Keys.RETURN)
-            lazy(10)
+            lazy(13)
             driver.get(url) # 가야하는 url 로 이동
         except:
             print("pass")
@@ -53,9 +53,9 @@ def fb_login(driver,url,id,pw):
         el.send_keys(email)
         el=driver.find_element_by_id("pass")
         el.send_keys(pw)
-        lazy(10)
+        lazy(13)
         el.send_keys(Keys.RETURN)
-        lazy(10)
+        lazy(13)
         driver.get(url) # 가야하는 url 로 이동
 
 """

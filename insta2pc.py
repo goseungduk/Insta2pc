@@ -28,7 +28,7 @@ class OnePost_MultiPics(QThread):
         url=self.mainGUI.urlBox.text()
         id=self.mainGUI.idBox.text()
         pw=self.mainGUI.pwBox.text()
-        path=chromedriver_autoinstaller.install()
+        path=chromedriver_autoinstaller.install(cwd=True)
         driver = webdriver.Chrome(path)
         time.sleep(1)
         try:
@@ -58,7 +58,7 @@ class OneAcc_AllThumbs(QThread):
         url=self.mainGUI.urlBox.text()
         id=self.mainGUI.idBox.text()
         pw=self.mainGUI.pwBox.text()
-        path=chromedriver_autoinstaller.install()
+        path=chromedriver_autoinstaller.install(cwd=True)
         driver = webdriver.Chrome(path)
         time.sleep(1)
         try:
@@ -84,7 +84,7 @@ class OneAcc_AllPics(QThread):
         url=self.mainGUI.urlBox.text()
         id=self.mainGUI.idBox.text()
         pw=self.mainGUI.pwBox.text()
-        path=chromedriver_autoinstaller.install()
+        path=chromedriver_autoinstaller.install(cwd=True)
         driver = webdriver.Chrome(path)
         driver.get(url)
         time.sleep(2)
@@ -178,11 +178,11 @@ class MyWindow(QMainWindow):
         if(n):
             self.btn1.setEnabled(True)
             self.btn2.setEnabled(True)
-            self.btn3.setEnabled(True)
+            #self.btn3.setEnabled(True)
         else:
             self.btn1.setEnabled(False)
             self.btn2.setEnabled(False)
-            self.btn3.setEnabled(False)
+            #self.btn3.setEnabled(False)
             
     def get_MultiPics_from_onePost(self): # 모든 기능은 해당 구문을 따르도록
         if(self.input_checking()):
