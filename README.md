@@ -19,6 +19,8 @@
 1. 실행합니다.
 
 2. 원하는 모드에 따라서 URL 을 입력해주고 인스타그램과 연동되어있는 페이스북 계정을 입력해줍니다.
+   <br />
+   <font color="red" style="font-weight:bold">※ 될 수 있으면 현재 PC 에 로그인 되어있는 인스타그램을 로그아웃 하고 시도해줍시다.</font>
 
 ![](./images/usage1.png)
 
